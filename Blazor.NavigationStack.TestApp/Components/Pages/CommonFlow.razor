@@ -1,6 +1,4 @@
-﻿@rendermode InteractiveAuto
-
-<NavigationStack @ref="_stack" BaseName="Level 0">
+﻿<NavigationStack @ref="_stack" BaseName="Level 0">
     <BaseContent>
         <h1>Level 0 Content</h1>
         <p>This is the starting point of the navigation stack. The NavigationStack component provides a way to navigate
@@ -13,10 +11,21 @@
         </p>
         @if (_data != null) {
             <p>
-                Level1: @_data.ValueFromLevel1
-            </p>
-            <p>
-                Level2: @_data.ValueFromLevel2
+            <table style="border-width: 1px; border-color: gray; border-style: solid;">
+                <tr>
+                    <th colspan="2">
+                        Selected Values
+                    </th>
+                </tr>
+                <tr>
+                    <td>Level1:</td>
+                    <td>@_data.ValueFromLevel1</td>
+                </tr>
+                <tr>
+                    <td>Level2:</td>
+                    <td>@_data.ValueFromLevel2</td>
+                </tr>
+            </table>
             </p>
         }
         <button @onclick="ShowLevel1">Select Values</button>
