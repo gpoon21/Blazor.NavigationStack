@@ -164,12 +164,16 @@
 
 
     ///<inheritdoc cref="INavigationStack.Push{T}"/>
-    public async Task<T?> Push<T>(StackPage stackPage) {
+    public async Task<Result<T>> Push<T>(StackPage stackPage) {
         _stack.Push(stackPage);
         StateHasChanged();
         try {
-            object? result = await stackPage.Task;
-            return (T?)result;
+            object result = await stackPage.Task;
+            (bool isCanceled, object? value) = ((bool, object?))result;
+            return new Result<T>() {
+                IsCanceled = isCanceled,
+                Value = (T?)value,
+            };
         } finally {
             _stack.Pop();
         }
@@ -181,8 +185,8 @@
     }
 
     ///<inheritdoc cref="INavigationStack.SetResult"/>
-    public void SetResult(object? value) {
-        _stack.Peek().SetResult(value);
+    public void SetResult(object value) {
+        _stack.Peek().SetResult((false, value));
         StateHasChanged();
     }
 
@@ -220,7 +224,12 @@
     private Action _onBackAction = null!;
 
     private void OnBackClicked() {
-        SetResult(null);
+        _stack.Peek().SetResult((true, null));
+        StateHasChanged();
+    }
+    
+    public void Cancel() {
+        OnBackClicked();
     }
 
     public void Refresh() {
@@ -228,3 +237,5 @@
     }
 
 }
+
+

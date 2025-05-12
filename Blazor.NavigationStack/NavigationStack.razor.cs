@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Components;
 
 namespace Blazor.NavigationStack;
 
@@ -72,5 +73,10 @@ public partial class NavigationStack {
         public required Action Back { get; init; }
     }
 
+    public readonly struct Result<T> {
+        public static readonly Result<T> Canceled = new() { IsCanceled = true, Value = default };
+        public required T? Value { get; init; }
+        public required bool IsCanceled { get; init; }
+    }
 
 }

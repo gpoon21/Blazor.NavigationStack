@@ -18,9 +18,9 @@ public class StackPage {
 
     private RenderFragment? _menu;
 
-    private readonly TaskCompletionSource<object?> _tcs = new();
+    private readonly TaskCompletionSource<object> _tcs = new();
 
-    public Task<object?> Task {
+    public Task<object> Task {
         get { return _tcs.Task; }
     }
 
@@ -32,7 +32,7 @@ public class StackPage {
         _name = name;
     }
 
-    internal void SetResult(object? value) {
+    internal void SetResult((bool isCanceled, object? value) value) {
         _tcs.SetResult(value);
     }
 

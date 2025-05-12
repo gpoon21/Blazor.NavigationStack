@@ -1,5 +1,4 @@
-﻿@page "/example1"
-@rendermode InteractiveServer
+﻿@rendermode InteractiveServer
 
 <NavigationStack @ref="_stack" BaseName="Base Header">
     <BaseContent>
@@ -30,17 +29,17 @@
 
     private async Task ShowLevel1() {
         if (_stack == null) return;
-        string? valueFromLevel1 = "";
+        string valueFromLevel1 = "";
 
         async Task Level1Next() {
-            string? valueFromLevel2 = await ShowLevel2();
-            if (valueFromLevel2 == null || valueFromLevel1 == null) {
-                _stack.SetResult();
+            NavigationStack.Result<string> level2Result = await ShowLevel2();
+            if (level2Result.IsCanceled || level2Result.Value == null) {
+                // _stack.Cancel(); //Back to the base content if level2 was canceled
                 return;
             }
             _stack.SetResult(new Data() {
                 ValueFromLevel1 = valueFromLevel1,
-                ValueFromLevel2 = valueFromLevel2,
+                ValueFromLevel2 = level2Result.Value,
             });
         }
 
@@ -54,26 +53,23 @@
                 <button @onclick="Level1Next">Next</button>
             };
         }
-        TryAgain:
 
-        Data? data = await _stack.Push<Data>(new StackPage() {
+        NavigationStack.Result<Data> result = await _stack.Push<Data>(new StackPage() {
             Content = Content(),
             Name = "Level1",
         });
 
-        if (data == null) goto TryAgain;
 
-        _data = data;
+        _data = result.Value;
     }
 
 
-    private async Task<string?> ShowLevel2() {
-        if (_stack == null) return null;
-
-        string? result = null;
+    private async Task<NavigationStack.Result<string>> ShowLevel2() {
+        if (_stack == null) return NavigationStack.Result<string>.Canceled;
+        string value = "";
 
         void OkClicked() {
-            _stack.SetResult(result);
+            _stack.SetResult(value);
         }
 
         RenderFragment Content() {
@@ -81,16 +77,17 @@
                 <h1>Level 2 Content</h1>
                 <div>
                     <label>Enter value:</label>
-                    <input type="text" @bind="result"/>
+                    <input type="text" @bind="value"/>
                 </div>
                 <button @onclick="OkClicked">Ok</button>
             };
         }
 
-        return await _stack.Push<string>(new StackPage() {
+        NavigationStack.Result<string> result = await _stack.Push<string>(new StackPage() {
             Content = Content(),
             Name = "Level2",
         });
+        return result;
     }
 
 
