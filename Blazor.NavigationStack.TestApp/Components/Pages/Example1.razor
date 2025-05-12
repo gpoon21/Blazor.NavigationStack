@@ -4,26 +4,92 @@
 <NavigationStack @ref="_stack" BaseName="Base Header">
     <BaseContent>
         <h1>Base Content</h1>
-        <button @onclick="NextButtonClicked">Next</button>
+        <p>This is the starting point of the navigation stack. The NavigationStack component provides a way to navigate
+            through stacked content while maintaining history.</p>
+        @if (_data != null) {
+            <p>
+                Level1: @_data.ValueFromLevel1
+            </p>
+            <p>
+                Level2: @_data.ValueFromLevel2
+            </p>
+        }
+        <button @onclick="ShowLevel1">Select Values</button>
     </BaseContent>
 </NavigationStack>
 
 @code {
 
     private INavigationStack? _stack;
+    private Data? _data;
 
-    private async Task NextButtonClicked() {
+    private class Data {
+        public required string ValueFromLevel1 { get; init; }
+        public required string ValueFromLevel2 { get; init; }
+    }
+
+    private async Task ShowLevel1() {
         if (_stack == null) return;
+        string? valueFromLevel1 = "";
+
+        async Task Level1Next() {
+            string? valueFromLevel2 = await ShowLevel2();
+            if (valueFromLevel2 == null || valueFromLevel1 == null) {
+                _stack.SetResult();
+                return;
+            }
+            _stack.SetResult(new Data() {
+                ValueFromLevel1 = valueFromLevel1,
+                ValueFromLevel2 = valueFromLevel2,
+            });
+        }
 
         RenderFragment Content() {
             return __builder => {
                 <h1>Level 1 Content</h1>
+                <div>
+                    <label>Enter value:</label>
+                    <input type="text" @bind="valueFromLevel1"/>
+                </div>
+                <button @onclick="Level1Next">Next</button>
+            };
+        }
+        TryAgain:
+
+        Data? data = await _stack.Push<Data>(new StackPage() {
+            Content = Content(),
+            Name = "Level1",
+        });
+
+        if (data == null) goto TryAgain;
+
+        _data = data;
+    }
+
+
+    private async Task<string?> ShowLevel2() {
+        if (_stack == null) return null;
+
+        string? result = null;
+
+        void OkClicked() {
+            _stack.SetResult(result);
+        }
+
+        RenderFragment Content() {
+            return __builder => {
+                <h1>Level 2 Content</h1>
+                <div>
+                    <label>Enter value:</label>
+                    <input type="text" @bind="result"/>
+                </div>
+                <button @onclick="OkClicked">Ok</button>
             };
         }
 
-        string? messageFromLevel1 = await _stack.Push<string>(new StackPage() {
+        return await _stack.Push<string>(new StackPage() {
             Content = Content(),
-            Name = "Level1",
+            Name = "Level2",
         });
     }
 
