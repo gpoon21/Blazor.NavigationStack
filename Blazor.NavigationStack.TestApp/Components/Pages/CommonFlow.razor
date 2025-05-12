@@ -1,10 +1,16 @@
-﻿@rendermode InteractiveServer
+﻿@rendermode InteractiveAuto
 
-<NavigationStack @ref="_stack" BaseName="Base Header">
+<NavigationStack @ref="_stack" BaseName="Level 0">
     <BaseContent>
-        <h1>Base Content</h1>
+        <h1>Level 0 Content</h1>
         <p>This is the starting point of the navigation stack. The NavigationStack component provides a way to navigate
             through stacked content while maintaining history.</p>
+        <p>
+            <label>
+                <input type="checkbox" @bind="_cancelOnBack"/>
+                Cancel on back
+            </label>
+        </p>
         @if (_data != null) {
             <p>
                 Level1: @_data.ValueFromLevel1
@@ -21,6 +27,7 @@
 
     private INavigationStack? _stack;
     private Data? _data;
+    private bool _cancelOnBack;
 
     private class Data {
         public required string ValueFromLevel1 { get; init; }
@@ -34,7 +41,7 @@
         async Task Level1Next() {
             NavigationStack.Result<string> level2Result = await ShowLevel2();
             if (level2Result.IsCanceled || level2Result.Value == null) {
-                // _stack.Cancel(); //Back to the base content if level2 was canceled
+                if (_cancelOnBack) _stack.Cancel();
                 return;
             }
             _stack.SetResult(new Data() {
@@ -46,10 +53,10 @@
         RenderFragment Content() {
             return __builder => {
                 <h1>Level 1 Content</h1>
-                <div>
+                <p>
                     <label>Enter value:</label>
                     <input type="text" @bind="valueFromLevel1"/>
-                </div>
+                </p>
                 <button @onclick="Level1Next">Next</button>
             };
         }
@@ -59,7 +66,7 @@
             Name = "Level1",
         });
 
-
+        if (result.IsCanceled) return;
         _data = result.Value;
     }
 
@@ -75,10 +82,15 @@
         RenderFragment Content() {
             return __builder => {
                 <h1>Level 2 Content</h1>
-                <div>
+                @if (_cancelOnBack) {
+                    <p>Clicking back button will return you to Level 0.</p>
+                } else {
+                    <p>Clicking back button will return you to Level 1.</p>
+                }
+                <p>
                     <label>Enter value:</label>
                     <input type="text" @bind="value"/>
-                </div>
+                </p>
                 <button @onclick="OkClicked">Ok</button>
             };
         }
