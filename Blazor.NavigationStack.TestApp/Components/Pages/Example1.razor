@@ -1,0 +1,30 @@
+﻿@page "/example1"
+
+<NavigationStack @ref="_stack" BaseName="Base Header">
+    <BaseContent>
+        <h1>Base Content</h1>
+        <button @onclick="NextButtonClicked">Next</button>
+    </BaseContent>
+</NavigationStack>
+
+@code {
+
+    private INavigationStack? _stack;
+
+    private async Task NextButtonClicked() {
+        if (_stack == null) return;
+
+        RenderFragment Content() {
+            return __builder => {
+                <h1>Level 1 Content</h1>
+            };
+        }
+
+        string? messageFromLevel1 = await _stack.Push<string>(new StackPage() {
+            Content = Content(),
+            Name = "Level1",
+        });
+    }
+
+
+}

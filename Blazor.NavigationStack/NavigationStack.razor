@@ -1,0 +1,229 @@
+﻿@implements INavigationStack
+
+@if (Parent == null) {
+    <CascadingValue TValue="INavigationStack" IsFixed="true" Value="this">
+        @LayoutFragment
+    </CascadingValue>
+}
+
+
+@code {
+
+    public static readonly RenderFragment<HeaderContext> DefaultHeaderRenderer = context => {
+        return __builder => {
+            <div class="navigation-stack-header">
+                @if (context.IsActive) {
+                    <strong>
+                        @context.Name
+                    </strong>
+                } else {
+                    @context.Name
+                }
+            </div>
+        };
+    };
+
+    private RenderFragment HeaderFragment(HeaderContext context) {
+        return __builder => {
+            if (Header == null) {
+                @DefaultHeaderRenderer(context)
+            } else {
+                @Header(context)
+            }
+        };
+    }
+
+    private RenderFragment ContentFragment {
+        get { return _stack.Peek().Content; }
+    }
+
+    private RenderFragment LayoutFragment {
+        get {
+            return __builder => {
+                @if (Layout == null) {
+                    <div style="display: flex; flex-direction: row;">
+                        <div style="display: flex; flex-direction: column; flex-wrap: wrap;">
+                            <div>
+                                @HeaderStackFragment
+                            </div>
+                            <div style="margin-left: auto;">
+                                <div style="display: flex; flex-direction: column; flex-wrap: wrap;">
+                                    <div>@BackFragment</div>
+                                    <div>@MenuFragment</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="flex: 1 1 auto; overflow-y: auto; height: 100%;">
+                            @ContentFragment
+                        </div>
+                    </div>
+                } else {
+                    @Layout(new LayoutContext() {
+                        Content = ContentFragment,
+                        HeaderStack = HeaderStackFragment,
+                        MenuStack = MenuFragment,
+                        BackButton = BackFragment,
+                    })
+                }
+            };
+        }
+    }
+
+    private RenderFragment HeaderStackFragment {
+        get {
+            return __builder => {
+                @if (HeaderStack == null) {
+                    <div style="display: flex; flex-direction: column; flex-wrap: wrap;">
+                        @foreach (StackPage stack in _stack) {
+                            if (stack.Name == null) continue;
+                            bool isLast = stack == _stack.Last();
+                            @HeaderFragment(new HeaderContext() {
+                                IsActive = isLast,
+                                Name = stack.Name,
+                            })
+                            if (!isLast) {
+                                <div>
+                                    →
+                                </div>
+                            }
+                        }
+                    </div>
+                } else {
+                    @HeaderStack(new HeaderStackContext() {
+                        Headers = _stack.Select(ele => HeaderFragment(new HeaderContext() {
+                            IsActive = ele == _stack.Last(),
+                            Name = ele.Name,
+                        }))
+                    })
+                }
+
+            };
+        }
+    }
+
+    private RenderFragment MenuFragment {
+        get { return _stack.Peek().Menu ?? _emptyFragment; }
+    }
+
+    private RenderFragment BackFragment {
+        get {
+            return __builder => {
+                @if (Back == null) {
+                    <button @onclick="_onBackAction">
+                        ← BACK
+                    </button>
+                } else {
+                    @Back(new BackContext() { Back = _onBackAction })
+                }
+            };
+        }
+    }
+
+
+    [CascadingParameter]
+    public INavigationStack? Parent { get; set; }
+
+    [Parameter]
+    public RenderFragment<LayoutContext>? Layout { get; set; }
+
+    [Parameter]
+    public RenderFragment<HeaderStackContext>? HeaderStack { get; set; }
+
+    [Parameter]
+    public RenderFragment<HeaderContext>? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment<MenuContext>? Menu { get; set; }
+
+    [Parameter]
+    public RenderFragment<BackContext>? Back { get; set; }
+
+    [Parameter]
+    public EventCallback OnPushed { get; set; }
+
+    [Parameter]
+    public EventCallback OnPop { get; set; }
+
+    #region Base Properties 
+
+    [Parameter]
+    public RenderFragment? BaseContent { get; set; }
+
+
+    [Parameter]
+    public string? BaseName { get; set; }
+
+    [Parameter]
+    public RenderFragment? BaseMenu { get; set; }
+
+    #endregion
+
+
+    private readonly Stack<StackPage> _stack = new();
+
+
+    ///<inheritdoc cref="INavigationStack.Push{T}"/>
+    public async Task<T?> Push<T>(StackPage stackPage) {
+        _stack.Push(stackPage);
+        StateHasChanged();
+        try {
+            object? result = await stackPage.Task;
+            return (T?)result;
+        } finally {
+            _stack.Pop();
+        }
+    }
+
+    ///<inheritdoc cref="INavigationStack.Push"/>
+    public Task Push(StackPage stackPage) {
+        return Push<object>(stackPage);
+    }
+
+    ///<inheritdoc cref="INavigationStack.SetResult"/>
+    public void SetResult(object? value) {
+        _stack.Peek().SetResult(value);
+        StateHasChanged();
+    }
+
+
+    ///<inheritdoc cref="INavigationStack.SetMenu"/>
+    public void SetMenu(RenderFragment renderFragment) {
+        _stack.Peek().SetMenu(renderFragment);
+        StateHasChanged();
+    }
+
+    ///<inheritdoc cref="INavigationStack.SetName"/>
+    public void SetName(string name) {
+        _stack.Peek().SetName(name);
+        StateHasChanged();
+    }
+
+    private static readonly RenderFragment _emptyFragment = __builder => { };
+
+    protected override void OnInitialized() {
+        StackPage stackPage = new() {
+            Content = BaseContent ?? _emptyFragment,
+            Name = BaseName,
+            Menu = BaseMenu,
+        };
+        //if this component is already nested within another StackablePage,
+        //it will act just like pushing onto the existing stack normally.
+        if (Parent == null) {
+            _stack.Push(stackPage);
+        } else {
+            Parent.Push(stackPage);
+        }
+        _onBackAction = OnBackClicked;
+    }
+
+    private Action _onBackAction = null!;
+
+    private void OnBackClicked() {
+        SetResult(null);
+    }
+
+    public void Refresh() {
+        InvokeAsync(StateHasChanged);
+    }
+
+}
