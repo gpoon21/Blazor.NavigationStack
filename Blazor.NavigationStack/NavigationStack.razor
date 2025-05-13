@@ -193,7 +193,7 @@
     /// The initial content to display when the NavigationStack is first rendered.
     /// </summary>
     [Parameter]
-    public RenderFragment? BaseContent { get; set; }
+    public RenderFragment<INavigationStack>? BaseContent { get; set; }
 
     /// <summary>
     /// The name to display in the header for the initial navigation page.
@@ -205,7 +205,7 @@
     /// The menu content to display for the initial navigation page.
     /// </summary>
     [Parameter]
-    public RenderFragment? BaseMenu { get; set; }
+    public RenderFragment<INavigationStack>? BaseMenu { get; set; }
 
     #endregion
 
@@ -260,9 +260,9 @@
 
     protected override void OnInitialized() {
         StackPage stackPage = new() {
-            Content = BaseContent ?? _emptyFragment,
+            Content = BaseContent?.Invoke(this) ?? _emptyFragment,
             Name = BaseName,
-            Menu = BaseMenu,
+            Menu = BaseMenu?.Invoke(this) ?? _emptyFragment,
         };
         _stack.Push(stackPage);
         _onBackAction = OnBackClicked;

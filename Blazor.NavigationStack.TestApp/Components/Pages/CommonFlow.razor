@@ -1,15 +1,15 @@
 ﻿@using Blazor.NavigationStack.TestApp.Components.Pages.Stack
 
-<NavigationStack @ref="_stack" BaseName="Level 0"
+<NavigationStack BaseName="Level 0"
                  Layout="Layout" HeaderStack="HeaderStack"
                  Header="Header" HeaderSeparator="HeaderSeparator"
                  Menu="Menu" Back="Back">
     <BaseContent>
-        <BaseContent
+        <RootContent
             Level="0"
             MessageContent="@MessageContent"
             DataValues="_data"
-            OnSelectValues="ShowLevel1"/>
+            OnSelectValues="() => ShowLevel1(context)"/>
     </BaseContent>
 </NavigationStack>
 
@@ -35,21 +35,19 @@
 
     [Parameter]
     public RenderFragment? MessageContent { get; set; }
+    
+    private RootContent.Data? _data;
 
-    private INavigationStack? _stack;
-    private BaseContent.Data? _data;
 
-
-    private async Task ShowLevel1() {
-        if (_stack == null) return;
+    private async Task ShowLevel1(INavigationStack stack) {
         string valueFromLevel1 = "";
 
         async Task Level1Next() {
-            NavigationStack.Result<string> level2Result = await ShowLevel2();
+            NavigationStack.Result<string> level2Result = await ShowLevel2(stack);
             if (level2Result.IsCanceled || level2Result.Value == null) {
                 return;
             }
-            _stack.SetResult(new BaseContent.Data() {
+            stack.SetResult(new RootContent.Data() {
                 ValueFromLevel1 = valueFromLevel1,
                 ValueFromLevel2 = level2Result.Value,
             });
@@ -61,7 +59,7 @@
             };
         }
 
-        NavigationStack.Result<BaseContent.Data> result = await _stack.Push<BaseContent.Data>(new StackPage() {
+        NavigationStack.Result<RootContent.Data> result = await stack.Push<RootContent.Data>(new StackPage() {
             Content = Content(),
             Name = "Level1",
         });
@@ -71,12 +69,11 @@
     }
 
 
-    private async Task<NavigationStack.Result<string>> ShowLevel2() {
-        if (_stack == null) return NavigationStack.Result<string>.Canceled;
+    private async Task<NavigationStack.Result<string>> ShowLevel2(INavigationStack stack) {
         string value = "";
 
         void OkClicked() {
-            _stack.SetResult(value);
+            stack.SetResult(value);
         }
 
         RenderFragment Content() {
@@ -86,8 +83,8 @@
         }
 
         void CancelClicked() {
-            _stack.Cancel();
-            _stack.Cancel();
+            stack.Cancel();
+            stack.Cancel();
         }
 
         RenderFragment Menu() {
@@ -96,7 +93,7 @@
             };
         }
 
-        NavigationStack.Result<string> result = await _stack.Push<string>(new StackPage() {
+        NavigationStack.Result<string> result = await stack.Push<string>(new StackPage() {
             Content = Content(),
             Name = "Level2",
             Menu = Menu(),
