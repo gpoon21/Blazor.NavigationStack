@@ -1,42 +1,19 @@
-﻿<NavigationStack @ref="_stack" BaseName="Level 0"
+﻿@using Blazor.NavigationStack.TestApp.Components.Pages.Stack
+
+<NavigationStack @ref="_stack" BaseName="Level 0"
                  Layout="Layout" HeaderStack="HeaderStack"
                  Header="Header" HeaderSeparator="HeaderSeparator"
                  Menu="Menu" Back="Back">
     <BaseContent>
-        <h1>Level 0 Content</h1>
-        @(MessageContent ?? DefaultMessageContent())
-        @if (_data != null) {
-            <div style="display: flex; width: 100%; padding: 10px 0 10px 0;">
-                <table style="border-width: 1px; border-color: gray; border-style: solid; margin: auto;">
-                    <tr>
-                        <th colspan="2">
-                            Selected Values
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>Level1:</td>
-                        <td>@_data.ValueFromLevel1</td>
-                    </tr>
-                    <tr>
-                        <td>Level2:</td>
-                        <td>@_data.ValueFromLevel2</td>
-                    </tr>
-                </table>
-            </div>
-        }
-        <button @onclick="ShowLevel1">Select Values</button>
+        <BaseContent
+            Level="0"
+            MessageContent="@MessageContent"
+            DataValues="_data"
+            OnSelectValues="ShowLevel1"/>
     </BaseContent>
 </NavigationStack>
 
 @code {
-
-    private RenderFragment DefaultMessageContent() {
-        return __builder => {
-            <p>This is the starting point of the navigation stack. The NavigationStack component provides a way to
-                navigate
-                through stacked content while maintaining history.</p>
-        };
-    }
 
     [Parameter]
     public RenderFragment<NavigationStack.LayoutContext>? Layout { get; set; }
@@ -60,12 +37,8 @@
     public RenderFragment? MessageContent { get; set; }
 
     private INavigationStack? _stack;
-    private Data? _data;
+    private BaseContent.Data? _data;
 
-    private class Data {
-        public required string ValueFromLevel1 { get; init; }
-        public required string ValueFromLevel2 { get; init; }
-    }
 
     private async Task ShowLevel1() {
         if (_stack == null) return;
@@ -76,7 +49,7 @@
             if (level2Result.IsCanceled || level2Result.Value == null) {
                 return;
             }
-            _stack.SetResult(new Data() {
+            _stack.SetResult(new BaseContent.Data() {
                 ValueFromLevel1 = valueFromLevel1,
                 ValueFromLevel2 = level2Result.Value,
             });
@@ -84,16 +57,11 @@
 
         RenderFragment Content() {
             return __builder => {
-                <h1>Level 1 Content</h1>
-                <p>
-                    <label>Enter value:</label>
-                    <input type="text" @bind="valueFromLevel1"/>
-                </p>
-                <button @onclick="Level1Next">Next</button>
+                <LevelContent Level="1" @bind-Value="valueFromLevel1" OnNext="Level1Next"/>
             };
         }
 
-        NavigationStack.Result<Data> result = await _stack.Push<Data>(new StackPage() {
+        NavigationStack.Result<BaseContent.Data> result = await _stack.Push<BaseContent.Data>(new StackPage() {
             Content = Content(),
             Name = "Level1",
         });
@@ -113,12 +81,7 @@
 
         RenderFragment Content() {
             return __builder => {
-                <h1>Level 2 Content</h1>
-                <p>
-                    <label>Enter value:</label>
-                    <input type="text" @bind="value"/>
-                </p>
-                <button @onclick="OkClicked">Ok</button>
+                <LevelContent Level="2" @bind-Value="value" OnNext="OkClicked" ButtonText="Ok"/>
             };
         }
 

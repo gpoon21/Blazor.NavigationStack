@@ -19,4 +19,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\app.css" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Components\Pages\Stack\" />
+    </ItemGroup>
+
 </Project>

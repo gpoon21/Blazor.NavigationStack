@@ -1,0 +1,35 @@
+﻿<h1>Level @Level Content</h1>
+<p>
+    <label>Enter value:</label>
+    <input type="text" value="@Value" @onchange="HandleValueChanged"/>
+</p>
+<button @onclick="HandleNext">@ButtonText</button>
+
+@code {
+
+    [Parameter]
+    public int Level { get; set; }
+
+    [Parameter]
+    public string Value { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback OnNext { get; set; }
+
+    [Parameter]
+    public string ButtonText { get; set; } = "Next";
+
+    private async Task HandleValueChanged(ChangeEventArgs e) {
+        Value = e.Value?.ToString() ?? "";
+        await ValueChanged.InvokeAsync(Value);
+    }
+
+    private async Task HandleNext() {
+        await OnNext.InvokeAsync();
+    }
+
+}
+

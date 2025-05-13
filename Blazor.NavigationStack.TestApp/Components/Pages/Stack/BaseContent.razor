@@ -1,0 +1,55 @@
+﻿<h1>Level @Level Content</h1>
+@(MessageContent ?? DefaultMessageContent())
+@if (DataValues != null) {
+    <div style="display: flex; width: 100%; padding: 10px 0 10px 0;">
+        <table style="border-width: 1px; border-color: gray; border-style: solid; margin: auto;">
+            <tr>
+                <th colspan="2">
+                    Selected Values
+                </th>
+            </tr>
+            <tr>
+                <td>Level1:</td>
+                <td>@DataValues.ValueFromLevel1</td>
+            </tr>
+            <tr>
+                <td>Level2:</td>
+                <td>@DataValues.ValueFromLevel2</td>
+            </tr>
+        </table>
+    </div>
+}
+<button @onclick="HandleSelectValues">Select Values</button>
+
+@code {
+
+    [Parameter]
+    public int Level { get; set; } = 0;
+
+    [Parameter]
+    public RenderFragment? MessageContent { get; set; }
+
+    [Parameter]
+    public Data? DataValues { get; set; }
+
+    [Parameter]
+    public EventCallback OnSelectValues { get; set; }
+
+    private RenderFragment DefaultMessageContent() {
+        return __builder => {
+            <p>This is the starting point of the navigation stack. The NavigationStack component provides a way to
+                navigate through stacked content while maintaining history.</p>
+        };
+    }
+
+    private async Task HandleSelectValues() {
+        await OnSelectValues.InvokeAsync();
+    }
+
+    public class Data {
+        public required string ValueFromLevel1 { get; init; }
+        public required string ValueFromLevel2 { get; init; }
+    }
+
+}
+
