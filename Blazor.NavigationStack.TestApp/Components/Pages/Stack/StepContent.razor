@@ -1,0 +1,11 @@
+﻿<h1>Step #@Step</h1>
+<p>This is step @Step of the navigation process. Click 'Next' to proceed to the next step.</p>
+<button @onclick="OnNextClicked">Next</button>
+
+@code {
+    [Parameter]
+    public int Step { get; set; }
+    
+    [Parameter]
+    public EventCallback OnNextClicked { get; set; }
+}
