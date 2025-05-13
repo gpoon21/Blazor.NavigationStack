@@ -6,30 +6,24 @@
         <h1>Level 0 Content</h1>
         <p>This is the starting point of the navigation stack. The NavigationStack component provides a way to navigate
             through stacked content while maintaining history.</p>
-        <p>
-            <label>
-                <input type="checkbox" @bind="_cancelOnBack"/>
-                Cancel on back
-            </label>
-        </p>
         @if (_data != null) {
-            <p>
-            <table style="border-width: 1px; border-color: gray; border-style: solid;">
-                <tr>
-                    <th colspan="2">
-                        Selected Values
-                    </th>
-                </tr>
-                <tr>
-                    <td>Level1:</td>
-                    <td>@_data.ValueFromLevel1</td>
-                </tr>
-                <tr>
-                    <td>Level2:</td>
-                    <td>@_data.ValueFromLevel2</td>
-                </tr>
-            </table>
-            </p>
+            <div style="display: flex; width: 100%; padding: 10px 0 10px 0;">
+                <table style="border-width: 1px; border-color: gray; border-style: solid; margin: auto;">
+                    <tr>
+                        <th colspan="2">
+                            Selected Values
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>Level1:</td>
+                        <td>@_data.ValueFromLevel1</td>
+                    </tr>
+                    <tr>
+                        <td>Level2:</td>
+                        <td>@_data.ValueFromLevel2</td>
+                    </tr>
+                </table>
+            </div>
         }
         <button @onclick="ShowLevel1">Select Values</button>
     </BaseContent>
@@ -58,7 +52,6 @@
 
     private INavigationStack? _stack;
     private Data? _data;
-    private bool _cancelOnBack;
 
     private class Data {
         public required string ValueFromLevel1 { get; init; }
@@ -72,7 +65,6 @@
         async Task Level1Next() {
             NavigationStack.Result<string> level2Result = await ShowLevel2();
             if (level2Result.IsCanceled || level2Result.Value == null) {
-                if (_cancelOnBack) _stack.Cancel();
                 return;
             }
             _stack.SetResult(new Data() {
@@ -113,11 +105,6 @@
         RenderFragment Content() {
             return __builder => {
                 <h1>Level 2 Content</h1>
-                @if (_cancelOnBack) {
-                    <p>Clicking back button will return you to Level 0.</p>
-                } else {
-                    <p>Clicking back button will return you to Level 1.</p>
-                }
                 <p>
                     <label>Enter value:</label>
                     <input type="text" @bind="value"/>
@@ -126,9 +113,21 @@
             };
         }
 
+        void CancelClicked() {
+            _stack.Cancel();
+            _stack.Cancel();
+        }
+
+        RenderFragment Menu() {
+            return __builder => {
+                <button @onclick="CancelClicked">✖ Cancel</button>
+            };
+        }
+
         NavigationStack.Result<string> result = await _stack.Push<string>(new StackPage() {
             Content = Content(),
             Name = "Level2",
+            Menu = Menu(),
         });
         return result;
     }
