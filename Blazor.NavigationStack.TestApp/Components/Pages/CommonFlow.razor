@@ -1,4 +1,7 @@
-﻿<NavigationStack @ref="_stack" BaseName="Level 0">
+﻿<NavigationStack @ref="_stack" BaseName="Level 0"
+                 Layout="Layout" HeaderStack="HeaderStack"
+                 Header="Header" HeaderSeparator="HeaderSeparator"
+                 Menu="Menu" Back="Back">
     <BaseContent>
         <h1>Level 0 Content</h1>
         <p>This is the starting point of the navigation stack. The NavigationStack component provides a way to navigate
@@ -33,6 +36,25 @@
 </NavigationStack>
 
 @code {
+
+    [Parameter]
+    public RenderFragment<NavigationStack.LayoutContext>? Layout { get; set; }
+
+    [Parameter]
+    public RenderFragment<NavigationStack.HeaderStackContext>? HeaderStack { get; set; }
+
+    [Parameter]
+    public RenderFragment<NavigationStack.HeaderContext>? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment? HeaderSeparator { get; set; }
+
+    [Parameter]
+    public RenderFragment<NavigationStack.MenuContext>? Menu { get; set; }
+
+    [Parameter]
+    public RenderFragment<NavigationStack.BackContext>? Back { get; set; }
+
 
     private INavigationStack? _stack;
     private Data? _data;
