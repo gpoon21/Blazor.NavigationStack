@@ -39,6 +39,7 @@ public partial class NavigationStack {
         /// ordering from top of the stack to the bottom.
         /// </summary>
         public required IEnumerable<RenderFragment> Headers { get; init; }
+
         /// <summary>
         /// Fragment used to render a separator between header elements in the stack.
         /// Used for visual separation of consecutive headers.
@@ -73,7 +74,8 @@ public partial class NavigationStack {
     /// </summary>
     public readonly struct BackContext {
         /// <summary>
-        /// When invoked, the current <see cref="StackPage"/> will be popped with a result set to null.
+        /// When invoked, the current <see cref="StackPage"/> will be popped with the
+        /// <see cref="Result{T}.IsCanceled"/> set.
         /// </summary>
         public required Action Back { get; init; }
     }

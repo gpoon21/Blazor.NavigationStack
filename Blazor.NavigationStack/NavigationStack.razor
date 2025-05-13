@@ -118,6 +118,7 @@
     private RenderFragment BackFragment {
         get {
             return __builder => {
+                if (_stack.Count <= 1) return;
                 @if (Back == null) {
                     <button @onclick="_onBackAction">
                         ◀ BACK
@@ -133,44 +134,84 @@
     [CascadingParameter]
     public INavigationStack? Parent { get; set; }
 
+    /// <summary>
+    /// Customizes the overall layout of the <see cref="NavigationStack"/> component.
+    /// When provided, replaces the default layout with custom rendering.
+    /// </summary>
     [Parameter]
     public RenderFragment<LayoutContext>? Layout { get; set; }
 
+    /// <summary>
+    /// Customizes how the header navigation stack is rendered.
+    /// When provided, replaces the default header stack rendering with a custom implementation.
+    /// </summary>
+    /// <remarks>
+    /// The HeaderStackContext provides access to all header fragments and the separator
+    /// used between them, allowing complete customization of the breadcrumb-like navigation.
+    /// </remarks>
     [Parameter]
     public RenderFragment<HeaderStackContext>? HeaderStack { get; set; }
 
+    /// <summary>
+    /// Customizes how individual headers in the navigation stack are rendered.
+    /// When provided, replaces the default header rendering with a custom implementation.
+    /// </summary>
     [Parameter]
     public RenderFragment<HeaderContext>? Header { get; set; }
 
+    /// <summary>
+    /// Customizes the separator displayed between headers in the navigation stack.
+    /// When provided, replaces the default "▶" separator with custom content.
+    /// </summary>
     [Parameter]
     public RenderFragment? HeaderSeparator { get; set; }
 
+    /// <summary>
+    /// Customizes the menu display for the current page in the navigation stack.
+    /// </summary>
     [Parameter]
     public RenderFragment<MenuContext>? Menu { get; set; }
 
+    /// <summary>
+    /// Customizes the back button appearance and behavior.
+    /// When provided, replaces the default "◀ BACK" button with custom implementation.
+    /// </summary>
     [Parameter]
     public RenderFragment<BackContext>? Back { get; set; }
 
+    /// <summary>
+    /// Event callback that is triggered when a new page is pushed onto the navigation stack.
+    /// </summary>
     [Parameter]
     public EventCallback OnPushed { get; set; }
 
+    /// <summary>
+    /// Event callback that is triggered when a page is popped from the navigation stack.
+    /// </summary>
     [Parameter]
     public EventCallback OnPop { get; set; }
 
     #region Base Properties 
 
+    /// <summary>
+    /// The initial content to display when the NavigationStack is first rendered.
+    /// </summary>
     [Parameter]
     public RenderFragment? BaseContent { get; set; }
 
-
+    /// <summary>
+    /// The name to display in the header for the initial navigation page.
+    /// </summary>
     [Parameter]
     public string? BaseName { get; set; }
 
+    /// <summary>
+    /// The menu content to display for the initial navigation page.
+    /// </summary>
     [Parameter]
     public RenderFragment? BaseMenu { get; set; }
 
     #endregion
-
 
     private readonly Stack<StackPage> _stack = new();
 
@@ -180,17 +221,12 @@
         _stack.Push(stackPage);
         await OnPushed.InvokeAsync();
         StateHasChanged();
-        try {
-            object result = await stackPage.Task;
-            (bool isCanceled, object? value) = ((bool, object?))result;
-            return new Result<T>() {
-                IsCanceled = isCanceled,
-                Value = (T?)value,
-            };
-        } finally {
-            _stack.Pop();
-            await OnPop.InvokeAsync();
-        }
+        object result = await stackPage.Task;
+        (bool isCanceled, object? value) = ((bool, object?))result;
+        return new Result<T>() {
+            IsCanceled = isCanceled,
+            Value = (T?)value,
+        };
     }
 
     ///<inheritdoc cref="INavigationStack.Push"/>
@@ -200,7 +236,14 @@
 
     ///<inheritdoc cref="INavigationStack.SetResult"/>
     public void SetResult(object value) {
-        _stack.Peek().SetResult((false, value));
+        SetResult(false, value);
+    }
+
+    private void SetResult(bool isCanceled, object? value) {
+        if (_stack.Count <= 1) return;
+        StackPage page = _stack.Pop();
+        page.SetResult((isCanceled, value));
+        OnPop.InvokeAsync();
         StateHasChanged();
     }
 
@@ -238,8 +281,7 @@
     private Action _onBackAction = null!;
 
     private void OnBackClicked() {
-        _stack.Peek().SetResult((true, null));
-        StateHasChanged();
+        SetResult(true, null);
     }
 
     public void Cancel() {
