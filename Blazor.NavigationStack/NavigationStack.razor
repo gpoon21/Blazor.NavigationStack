@@ -23,6 +23,12 @@
         };
     };
 
+    public static RenderFragment DefaultHeaderSeparator = __builder => {
+        <div>
+            ▶
+        </div>
+    };
+
     private RenderFragment HeaderFragment(HeaderContext context) {
         return __builder => {
             if (Header == null) {
@@ -83,9 +89,11 @@
                                 Name = page.Name,
                             })
                             if (!isLast) {
-                                <div>
-                                    →
-                                </div>
+                                if (HeaderSeparator == null) {
+                                    @DefaultHeaderSeparator
+                                } else {
+                                    @HeaderSeparator
+                                }
                             }
                         }
                     </div>
@@ -94,7 +102,8 @@
                         Headers = _stack.Select(page => HeaderFragment(new HeaderContext() {
                             IsActive = page == reverseLast,
                             Name = page.Name,
-                        }))
+                        })),
+                        Separator = HeaderSeparator ?? DefaultHeaderSeparator,
                     })
                 }
 
@@ -111,7 +120,7 @@
             return __builder => {
                 @if (Back == null) {
                     <button @onclick="_onBackAction">
-                        ← BACK
+                        ◀ BACK
                     </button>
                 } else {
                     @Back(new BackContext() { Back = _onBackAction })
@@ -132,6 +141,9 @@
 
     [Parameter]
     public RenderFragment<HeaderContext>? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment? HeaderSeparator { get; set; }
 
     [Parameter]
     public RenderFragment<MenuContext>? Menu { get; set; }
@@ -227,7 +239,7 @@
         _stack.Peek().SetResult((true, null));
         StateHasChanged();
     }
-    
+
     public void Cancel() {
         OnBackClicked();
     }

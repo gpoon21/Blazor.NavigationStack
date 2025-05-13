@@ -39,6 +39,11 @@ public partial class NavigationStack {
         /// ordering from top of the stack to the bottom.
         /// </summary>
         public required IEnumerable<RenderFragment> Headers { get; init; }
+        /// <summary>
+        /// Fragment used to render a separator between header elements in the stack.
+        /// Used for visual separation of consecutive headers.
+        /// </summary>
+        public required RenderFragment Separator { get; init; }
     }
 
     public readonly struct HeaderContext {
