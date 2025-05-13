@@ -1,10 +1,9 @@
 ﻿@implements INavigationStack
 
-@if (Parent == null) {
-    <CascadingValue TValue="INavigationStack" IsFixed="true" Value="this">
-        @LayoutFragment
-    </CascadingValue>
-}
+
+<CascadingValue TValue="INavigationStack" IsFixed="true" Value="this">
+    @LayoutFragment
+</CascadingValue>
 
 
 @code {
@@ -130,9 +129,6 @@
         }
     }
 
-
-    [CascadingParameter]
-    public INavigationStack? Parent { get; set; }
 
     /// <summary>
     /// Customizes the overall layout of the <see cref="NavigationStack"/> component.
@@ -268,13 +264,7 @@
             Name = BaseName,
             Menu = BaseMenu,
         };
-        //if this component is already nested within another StackablePage,
-        //it will act just like pushing onto the existing stack normally.
-        if (Parent == null) {
-            _stack.Push(stackPage);
-        } else {
-            Parent.Push(stackPage);
-        }
+        _stack.Push(stackPage);
         _onBackAction = OnBackClicked;
     }
 
