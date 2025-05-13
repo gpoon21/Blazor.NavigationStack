@@ -178,6 +178,7 @@
     ///<inheritdoc cref="INavigationStack.Push{T}"/>
     public async Task<Result<T>> Push<T>(StackPage stackPage) {
         _stack.Push(stackPage);
+        await OnPushed.InvokeAsync();
         StateHasChanged();
         try {
             object result = await stackPage.Task;
@@ -188,6 +189,7 @@
             };
         } finally {
             _stack.Pop();
+            await OnPop.InvokeAsync();
         }
     }
 
