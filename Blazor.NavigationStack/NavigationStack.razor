@@ -91,7 +91,7 @@
                     </div>
                 } else {
                     @HeaderStack(new HeaderStackContext() {
-                        Headers = _stack.Reverse().Select(page => HeaderFragment(new HeaderContext() {
+                        Headers = _stack.Select(page => HeaderFragment(new HeaderContext() {
                             IsActive = page == reverseLast,
                             Name = page.Name,
                         }))

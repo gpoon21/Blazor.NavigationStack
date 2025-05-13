@@ -35,7 +35,8 @@ public partial class NavigationStack {
     /// </summary>
     public readonly struct HeaderStackContext {
         /// <summary>
-        /// Each rendering a part of the header associates with a <see cref="StackPage"/>.
+        /// Each rendering a part of the header associates with a <see cref="StackPage"/>
+        /// ordering from top of the stack to the bottom.
         /// </summary>
         public required IEnumerable<RenderFragment> Headers { get; init; }
     }
