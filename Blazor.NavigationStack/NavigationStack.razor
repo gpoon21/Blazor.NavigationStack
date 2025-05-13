@@ -235,6 +235,11 @@
         SetResult(false, value);
     }
 
+    ///<inheritdoc cref="INavigationStack.Pop"/>
+    public void Pop() {
+        SetResult(false, null);
+    }
+
     private void SetResult(bool isCanceled, object? value) {
         if (_stack.Count <= 1) return;
         StackPage page = _stack.Pop();

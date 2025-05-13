@@ -22,7 +22,7 @@ public interface INavigationStack {
     void SetResult(object value);
 
     /// <summary>
-    /// Pop the current page.
+    /// Pop the current page and set <see cref="NavigationStack.Result{T}.IsCanceled"/>.
     /// </summary>
     void Cancel();
 
@@ -35,6 +35,11 @@ public interface INavigationStack {
     /// Set name of the current <see cref="StackPage"/>.
     /// </summary>
     void SetName(string name);
+
     void Refresh();
 
+    /// <summary>
+    /// Pop the current page.
+    /// </summary>
+    void Pop();
 }
