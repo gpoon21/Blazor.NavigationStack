@@ -1,0 +1,75 @@
+﻿@using Blazor.NavigationStack.TestApp.Components.Pages.Stack
+
+<NavigationStack @ref="_stack">
+    <Layout>
+        <div style="display: flex; flex-direction: row; gap: 10px;">
+            <div style="border-right: solid 1px white; align-self: stretch; padding-right: 10px;">
+                <div style="margin: auto;">
+                    @context.HeaderStack
+                </div>
+            </div>
+            <div>
+                @context.Content
+            </div>
+        </div>
+    </Layout>
+    <HeaderStack>
+        <div style="display: flex; flex-direction: column;">
+            @foreach (RenderFragment header in context.Headers) {
+                <div>
+                    @header
+                </div>
+            }
+        </div>
+    </HeaderStack>
+    <BaseContent>
+        <h1>
+            All steps have been completed
+        </h1>
+        <button @onclick="Reset">Reset</button>
+    </BaseContent>
+    <Header>
+        <div style="white-space: nowrap;">
+            @NavigationStack.DefaultHeaderRenderer(context)
+        </div>
+    </Header>
+</NavigationStack>
+
+
+@code {
+
+    private INavigationStack? _stack;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (!firstRender || _stack == null) return;
+        await Start();
+    }
+
+    private async Task Start() {
+        if (_stack == null) return;
+
+        RenderFragment Content(int step) {
+            void NextClicked() {
+                _stack.Pop();
+            }
+
+            return __builder => {
+                <StepContent OnNextClicked="NextClicked" Step="step"/>
+            };
+        }
+        Task[] tasks = Enumerable.Range(1, 5)
+                                 .Reverse()
+                                 .Select(i => _stack.Push(new StackPage() {
+                                     Content = Content(i),
+                                     Name = $"Step #{i}"
+                                 })).ToArray();
+
+        await Task.WhenAll(tasks);
+    }
+
+
+    private Task Reset() {
+        return Start();
+    }
+
+}
