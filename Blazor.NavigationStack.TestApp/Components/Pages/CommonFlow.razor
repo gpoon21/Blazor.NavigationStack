@@ -4,8 +4,7 @@
                  Menu="Menu" Back="Back">
     <BaseContent>
         <h1>Level 0 Content</h1>
-        <p>This is the starting point of the navigation stack. The NavigationStack component provides a way to navigate
-            through stacked content while maintaining history.</p>
+        @(MessageContent ?? DefaultMessageContent())
         @if (_data != null) {
             <div style="display: flex; width: 100%; padding: 10px 0 10px 0;">
                 <table style="border-width: 1px; border-color: gray; border-style: solid; margin: auto;">
@@ -31,6 +30,14 @@
 
 @code {
 
+    private RenderFragment DefaultMessageContent() {
+        return __builder => {
+            <p>This is the starting point of the navigation stack. The NavigationStack component provides a way to
+                navigate
+                through stacked content while maintaining history.</p>
+        };
+    }
+
     [Parameter]
     public RenderFragment<NavigationStack.LayoutContext>? Layout { get; set; }
 
@@ -49,6 +56,8 @@
     [Parameter]
     public RenderFragment<NavigationStack.BackContext>? Back { get; set; }
 
+    [Parameter]
+    public RenderFragment? MessageContent { get; set; }
 
     private INavigationStack? _stack;
     private Data? _data;
