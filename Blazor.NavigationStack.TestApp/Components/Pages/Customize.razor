@@ -1,0 +1,66 @@
+﻿<CommonFlow
+    Layout="@CustomLayout"
+    HeaderStack="@CustomHeaderStack"
+    Header="@CustomHeader"
+    HeaderSeparator="@CustomHeaderSeparator"
+    Menu="@CustomMenu"
+    Back="@CustomBack">
+</CommonFlow>
+
+@code {
+
+    private RenderFragment<NavigationStack.LayoutContext> CustomLayout => context => {
+        return @<div class="dark-layout">
+                   <div class="dark-header">
+                       <div class="header-left">
+                           @context.BackButton
+                           @context.HeaderStack
+                       </div>
+                       <div class="header-right">
+                           @context.MenuStack
+                       </div>
+                   </div>
+                   <div class="dark-content">
+                       @context.Content
+                   </div>
+               </div>;
+    };
+
+    private RenderFragment<NavigationStack.HeaderStackContext> CustomHeaderStack => context => {
+        return @<div class="header-stack">
+                   @{
+                       RenderFragment header = context.Headers.First();
+                       <div class="header-item">
+                           @header
+                       </div>
+                   }
+               </div>;
+    };
+
+    private RenderFragment<NavigationStack.HeaderContext> CustomHeader => context => {
+        return @<div class="@(context.IsActive ? "header-active" : "header-inactive")">
+            @context.Name
+        </div>;
+    };
+
+    private RenderFragment CustomHeaderSeparator => @<div class="separator-arrow">
+        <span>→</span>
+    </div>;
+
+    private RenderFragment<NavigationStack.MenuContext> CustomMenu => context => {
+        return @<div class="menu-container">
+            @foreach (var option in context.Options) {
+                <div class="menu-item">
+                    @option
+                </div>
+            }
+        </div>;
+    };
+
+    private RenderFragment<NavigationStack.BackContext> CustomBack => context => {
+        return @<button class="back-button" @onclick="context.Back">
+            <span>◀</span> Back
+        </button>;
+    };
+
+}

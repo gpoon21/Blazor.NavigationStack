@@ -1,0 +1,162 @@
+﻿/* Dark Theme Styles for CommonFlow Component */
+
+/* Main Layout */
+.dark-layout {
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+.dark-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 6px 10px;
+    background-color: #252526;
+    border-bottom: 1px solid #333;
+}
+
+.dark-content {
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.header-left {
+    flex: 1;
+    display: flex;
+}
+
+.header-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Header Stack */
+.header-stack {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+}
+
+.header-item {
+    padding: 2px 3px;
+}
+
+.header-separator {
+    margin: 0 3px;
+}
+
+/* Header Styles */
+.header-active {
+    font-weight: bold;
+    color: #61dafb;
+    font-size: 14px;
+}
+
+.header-inactive {
+    font-weight: normal;
+    color: #a0a0a0;
+    font-size: 14px;
+}
+
+.separator-arrow {
+    color: #666;
+    font-size: 12px;
+}
+
+/* Menu Styles */
+.menu-container {
+    display: flex;
+    gap: 4px;
+}
+
+.menu-item {
+    /* Menu item specifics */
+}
+
+/* Back Button */
+.back-button {
+    background-color: #2d2d2d;
+    color: #61dafb;
+    border: 1px solid #2a5b70;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.back-button:hover {
+    background-color: #3a3a3a;
+}
+
+/* Global Button Styles */
+button {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin: 2px;
+}
+
+button:hover {
+    background-color: #3a3a3a;
+}
+
+/* Form Controls */
+input[type='text'] {
+    background-color: #333;
+    color: #e0e0e0;
+    border: 1px solid #555;
+    padding: 4px 8px;
+    border-radius: 3px;
+}
+
+input[type='text']:focus {
+    outline: none;
+    border-color: #61dafb;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    color: #e0e0e0;
+}
+
+h1 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+p {
+    color: #bbb;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    border-color: #444;
+}
+
+th {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    padding: 6px 10px;
+    text-align: left;
+}
+
+td {
+    padding: 4px 8px;
+    border-color: #444;
+    color: #bbb;
+}
