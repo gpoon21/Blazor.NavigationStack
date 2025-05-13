@@ -21,13 +21,19 @@ public interface INavigationStack {
     /// </summary>
     void SetResult(object value);
 
+    /// <summary>
+    /// Pop the current page.
+    /// </summary>
     void Cancel();
-    
+
     /// <summary>
     /// Set menu to the current <see cref="StackPage"/>.
     /// </summary>
     void SetMenu(RenderFragment renderFragment);
 
+    /// <summary>
+    /// Set name of the current <see cref="StackPage"/>.
+    /// </summary>
     void SetName(string name);
     void Refresh();
 
