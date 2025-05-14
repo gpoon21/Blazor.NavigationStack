@@ -8,9 +8,14 @@
 
 @code {
 
+    
+    /// <summary>
+    /// Default renderer for header items in the navigation stack.
+    /// Displays the header name with bold styling when active.
+    /// </summary>
     public static readonly RenderFragment<HeaderContext> DefaultHeaderRenderer = context => {
         return __builder => {
-            <div class="navigation-stack-header">
+            <div>
                 @if (context.IsActive) {
                     <strong>
                         @context.Name
@@ -22,6 +27,10 @@
         };
     };
 
+    /// <summary>
+    /// Default separator renderer used between header items in the navigation stack.
+    /// Displays a right-pointing arrow (▶) between headers.
+    /// </summary>
     public static readonly RenderFragment DefaultHeaderSeparator = __builder => {
         <div>
             ▶
