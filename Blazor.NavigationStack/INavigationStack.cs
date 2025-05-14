@@ -19,7 +19,7 @@ public interface INavigationStack {
     /// Complete the current <see cref="StackPage"/> by setting a result.
     /// This will cause the current <see cref="StackPage"/> to be popped and return to the previous page.
     /// </summary>
-    void SetResult(object value);
+    void SetResult(object? value);
 
     /// <summary>
     /// Pop the current page and set <see cref="NavigationStack.Result{T}.IsCanceled"/>.
