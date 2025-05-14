@@ -22,6 +22,15 @@ A flexible navigation stack for Blazor. Easily manage complex page chains with a
 </table>
 
 ## Installation
+Add the nuget package in your Blazor project
+```
+> dotnet add package Blazor.NavigationStack
+
+OR
+
+PM> Install-Package Blazor.NavigationStack
+```
+*Nuget package page can be found [here](https://www.nuget.org/packages/Blazor.NavigationStack).*
 ## Basic Usage
 ### Obtaining INavigationStack
 All operations on the Blazor navigation stack can be done through INavigationStack interface.
