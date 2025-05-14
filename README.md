@@ -7,6 +7,19 @@ A flexible navigation stack for Blazor. Easily manage complex page chains with a
 
 ## Samples/Demo
 <a href="https://purple-rock-0e47e3410.6.azurestaticapps.net/" target="_blank">Live Demo</a>
+<table>
+  <tr>
+    <td align="center"><strong>Simple Usage</strong></td>
+    <td align="center"><strong>Customized</strong></td>
+    <td align="center"><strong>Steps</strong></td>
+  </tr>
+  <tr>
+    <td><img src="ReadmeAssets/SimpleUsage.gif"  alt="Simple Usage Demo"></td>
+    <td><img src="ReadmeAssets/Customized.gif"  alt="Customized Demo"></td>
+    <td><img src="ReadmeAssets/Steps.gif"  alt="Steps Demo"></td>
+  </tr>
+</table>
+
 ## Installation
 ## Basic Usage
 ### Obtaining INavigationStack
