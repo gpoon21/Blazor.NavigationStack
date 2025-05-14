@@ -13,7 +13,7 @@ A flexible navigation stack for Blazor. Easily manage complex page chains with a
 All operations on the Blazor navigation stack can be done through INavigationStack interface.
 INavigationStack interface can be obtained through many ways.
 1. Through context
-	``` csharp
+	``` razor
 	<NavigationStack>  
 	 <BaseContent>  
 	 <button @onclick="()=>StartClicked(context)">Start</button>  
