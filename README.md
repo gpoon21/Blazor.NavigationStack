@@ -272,6 +272,6 @@ The `BackContext` provides:
 - `Back`: Action to perform `INavigationStack.Cancel` 
 
 
-For a complete example, see the `Customize.razor` component which demonstrates a dark-themed custom navigation stack.
+For a complete example, see the `Blazor.NavigationStack.TestApp/Components/Pages/Customize.razor` component which demonstrates a dark-themed custom navigation stack.
 
 
