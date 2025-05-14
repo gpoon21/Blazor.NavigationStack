@@ -14,34 +14,33 @@ All operations on the Blazor navigation stack can be done through INavigationSta
 INavigationStack interface can be obtained through many ways.
 1. Through context
 	``` csharp
-	 <NavigationStack>  
-		 <BaseContent>  
-			 <button @onclick="()=>StartClicked(context)">Start</button>  
-		 </BaseContent>  
+	<NavigationStack>  
+	 <BaseContent>  
+	 <button @onclick="()=>StartClicked(context)">Start</button>  
+	 </BaseContent>  
 	</NavigationStack>  
 	  
 	@code {  
-	  
 	  private void StartClicked(INavigationStack stack) {  
 	        //push pages to the navigation stack  
 	  }  
 	}
-	  ```
+	```
 
 2. Through cascading parameter
-	ComponentWithNavigationStack.razor
+		ComponentWithNavigationStack.razor
 	``` html
 	<NavigationStack>  
-		<BaseContent>  
-			<SubComponent/>  
-		</BaseContent>  
+	 <BaseContent>  
+	 <StackPageComponent/>  
+	 </BaseContent>  
 	</NavigationStack>
 	```
-	SubComponent.razor
+	StackPageComponent.razor
 	``` csharp
 	@code {  
-		[CascadingParameter]  
-		public INavigationStack? NavigationStack { get; set; }  
+	  [CascadingParameter]  
+	    public INavigationStack? NavigationStack { get; set; }  
 	}
 	```
 
@@ -62,10 +61,10 @@ void ReturnClicked() {
     _stack.Pop();  
 }  
 RenderFragment Content() {  
-	return @<div>  
-				Content of the page  
-				<button @onclick="ReturnClicked">Return</button>  
-			</div>;  
+    return @<div>  
+  Content of the page  
+  <button @onclick="ReturnClicked">Return</button>  
+ </div>;  
 }  
 await _stack.Push(new StackPage() {  
     Content = Content(),  
