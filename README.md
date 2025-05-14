@@ -28,8 +28,8 @@ INavigationStack interface can be obtained through many ways.
 	```
 
 2. Through cascading parameter
-		ComponentWithNavigationStack.razor
-	``` html
+	ComponentWithNavigationStack.razor
+	``` razor
 	<NavigationStack>  
 	 <BaseContent>  
 	 <StackPageComponent/>  
@@ -37,7 +37,7 @@ INavigationStack interface can be obtained through many ways.
 	</NavigationStack>
 	```
 	StackPageComponent.razor
-	``` csharp
+	``` razor
 	@code {  
 	  [CascadingParameter]  
 	    public INavigationStack? NavigationStack { get; set; }  
@@ -45,7 +45,7 @@ INavigationStack interface can be obtained through many ways.
 	```
 
 3. Through @ref
-	``` csharp
+	``` razor
 	<NavigationStack @ref="_stack">  
 	</NavigationStack>  
 	  
@@ -56,7 +56,7 @@ INavigationStack interface can be obtained through many ways.
 #### Add a page to the stack
 + Adding a page on top of the current  one by calling INavigationStack.Push method.
 + Remove the top most page by calling INavigationStack.Pop method
-``` csharp
+``` razor
 void ReturnClicked() {  
     _stack.Pop();  
 }  
@@ -75,7 +75,7 @@ await _stack.Push(new StackPage() {
 + Setting a result and pop the cuurent page by calling INavigationStack.SetResult method.
 
 ComponentWithStack.razor
-``` csharp
+``` razor
 RenderFragment Content() {  
     return @<StackPageComponent/>;  
 }  
@@ -86,7 +86,7 @@ if(result.IsCanceled) return;
 string? valueFromStackPage = result.Value;
 ```
 StackPageComponent.razor
-``` csharp
+``` razor
 <div>  
  <input type="text" @bind="_value"/>  
  <button @onclick="OkClicked">Ok</button>  
