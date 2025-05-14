@@ -9,7 +9,7 @@ A flexible navigation stack for Blazor. Easily manage complex page chains with a
 <a href="https://purple-rock-0e47e3410.6.azurestaticapps.net/" target="_blank">Live Demo</a>
 ## Installation
 ## Basic Usage
-#### Obtaining INavigationStack
+### Obtaining INavigationStack
 All operations on the Blazor navigation stack can be done through INavigationStack interface.
 INavigationStack interface can be obtained through many ways.
 1. Through context
@@ -53,7 +53,7 @@ INavigationStack interface can be obtained through many ways.
 	  private INavigationStack? _stack;  
 	}
 	```
-#### Add a page to the stack
+### Add a page to the stack
 + Adding a page on top of the current  one by calling INavigationStack.Push method.
 + Remove the top most page by calling INavigationStack.Pop method
 ``` razor
@@ -70,7 +70,7 @@ await _stack.Push(new StackPage() {
     Content = Content(),  
 });
 ```
-#### Add a page expecting a result
+### Add a page expecting a result
 + Adding a page on top of the current  one by calling INavigationStack.Push\<T> method.
 + Setting a result and pop the cuurent page by calling INavigationStack.SetResult method.
 
