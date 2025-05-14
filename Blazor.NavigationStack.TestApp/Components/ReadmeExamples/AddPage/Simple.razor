@@ -1,0 +1,22 @@
+﻿
+<NavigationStack @ref="_stack">
+</NavigationStack>
+
+@code {
+    private INavigationStack? _stack;
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if(!firstRender || _stack == null) return;
+        void ReturnClicked() {
+            _stack.Pop();
+        }
+        RenderFragment Content() {
+            return @<div>
+                       Content of the page
+                       <button @onclick="ReturnClicked">Return</button>
+                   </div>;
+        }
+        await _stack.Push(new StackPage() {
+            Content = Content(), 
+        });
+    }
+}

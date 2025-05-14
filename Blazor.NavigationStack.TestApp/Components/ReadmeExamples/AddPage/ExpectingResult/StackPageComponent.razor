@@ -1,0 +1,17 @@
+﻿<div>
+    <input type="text" @bind="_value"/>
+    <button @onclick="OkClicked">Ok</button>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public INavigationStack? NavigationStack { get; set; }
+
+    private string _value = "";
+
+    private void OkClicked() {
+        NavigationStack?.SetResult(_value);
+    }
+
+}

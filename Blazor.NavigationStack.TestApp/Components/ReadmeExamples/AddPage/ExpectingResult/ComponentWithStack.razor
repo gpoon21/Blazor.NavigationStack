@@ -1,0 +1,20 @@
+﻿<NavigationStack @ref="_stack">
+</NavigationStack>
+
+@code {
+
+    private INavigationStack? _stack;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (!firstRender || _stack == null) return;
+        RenderFragment Content() {
+            return @<StackPageComponent/>;
+        }
+        NavigationStack.Result<string> result = await _stack.Push<string>(new StackPage() {
+            Content = Content(),
+        });
+        if(result.IsCanceled) return;
+        string? valueFromStackPage = result.Value;
+    }
+
+}
