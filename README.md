@@ -28,7 +28,8 @@ INavigationStack interface can be obtained through many ways.
 	```
 
 2. Through cascading parameter
-	ComponentWithNavigationStack.razor
+	
+ 	ComponentWithNavigationStack.razor
 	``` razor
 	<NavigationStack>  
 	 <BaseContent>  
