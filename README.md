@@ -126,7 +126,94 @@ StackPageComponent.razor
     }  
 }
 ```
+## Preserving states
+State of components can be preserved in the stack frame itself.
+``` csharp
+    private class Data {
+        public required string Value1 { get; init; }
+        public required string Value2 { get; init; }
+    }
 
+    private Data? _data;
+
+    private async Task ShowTableBuilder(INavigationStack stack) {
+        string? value1 = null;
+        string? value2 = null;
+
+        async Task SelectValue1() {
+            value1 = await ShowSelectValue(stack);
+        }
+        async Task SelectValue2() {
+            value2 = await ShowSelectValue(stack);
+        }
+
+        void OkClicked() {
+            if (value1 == null || value2 == null) return;
+            stack.SetResult(new Data() {
+                Value1 = value1,
+                Value2 = value2,
+            });
+        }
+
+        RenderFragment Content() {
+            return @<table>
+                <tr>
+                    <th colspan="3">Select values</th>
+                </tr>
+                <tr>
+                    <td><strong>Value1</strong></td>
+                    <td>@value1</td>
+                    <td>
+                        <button @onclick="SelectValue1">Select value</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Value2</strong></td>
+                    <td>@value2</td>
+                    <td>
+                        <button @onclick="SelectValue2">Select value</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <button disabled="@(value1 == null || value2 == null)" @onclick="OkClicked">Ok</button>
+                    </td>
+                </tr>
+            </table>;
+        }
+
+        NavigationStack.Result<Data> result = await stack.Push<Data>(new StackPage() {
+            Content = Content(),
+            Name = "Table Builder"
+        });
+        _data = result.Value;
+
+    }
+
+
+    private async Task<string?> ShowSelectValue(INavigationStack stack) {
+        string? result = null;
+
+        void OkClicked() {
+            stack.Pop();
+        }
+
+        RenderFragment Content() {
+            return @<div>
+                <input type="text" @bind="result"/>
+                <button @onclick="OkClicked">Ok</button>
+            </div>;
+        }
+
+        bool success = await stack.Push(new StackPage() {
+            Content = Content(),
+            Name = "Select Value",
+        });
+        if (!success) return null;
+
+        return result;
+    }
+```
 ## Modifying a page on top of the stack
 
 In case a name or the menu of the current page need to be updated after it was push onto the stack, it can be done through `INavigationStack.SetName` and `INavigationStack.SetMenu` methods.
