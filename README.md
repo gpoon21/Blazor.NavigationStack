@@ -2,7 +2,7 @@
 # Blazor Navigation Stack
 [![NuGet (with prereleases)](https://img.shields.io/nuget/vpre/Blazor.NavigationStack.svg?logo=nuget)](https://www.nuget.org/packages/Blazor.NavigationStack)
 
-A flexible navigation stack for Blazor. Easily manage complex page chains with a hierarchical navigation system ideal for wizards, multi-step forms, and nested workflows.
+A flexible navigation stack for Blazor. Easily manage complex page chains while retaining states with a hierarchical navigation system ideal for wizards, multi-step forms, and nested workflows.
 
 
 
