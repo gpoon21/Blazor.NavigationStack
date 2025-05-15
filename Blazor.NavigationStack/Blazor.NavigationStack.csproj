@@ -16,7 +16,12 @@
         <PackageProjectUrl>https://github.com/gpoon21/Blazor.NavigationStack</PackageProjectUrl>
         <RepositoryUrl>https://github.com/gpoon21/Blazor.NavigationStack</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <DocumentationFile>bin\Release\Blazor.NavigationStack.xml</DocumentationFile>
