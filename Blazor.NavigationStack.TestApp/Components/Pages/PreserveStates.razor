@@ -16,7 +16,7 @@
                 </tr>
             </table>
         }
-        <button @onclick="() => StartClicked(context)">Build Table</button>
+        <button @onclick="() => ShowTableBuilder(context)">Build Table</button>
     </BaseContent>
 </NavigationStack>
 
@@ -29,15 +29,15 @@
 
     private Data? _data;
 
-    private async Task StartClicked(INavigationStack stack) {
+    private async Task ShowTableBuilder(INavigationStack stack) {
         string? value1 = null;
         string? value2 = null;
 
         async Task SelectValue1() {
-            value1 = await GetValue(stack);
+            value1 = await ShowSelectValue(stack);
         }
         async Task SelectValue2() {
-            value2 = await GetValue(stack);
+            value2 = await ShowSelectValue(stack);
         }
 
         void OkClicked() {
@@ -84,7 +84,7 @@
     }
 
 
-    private async Task<string?> GetValue(INavigationStack stack) {
+    private async Task<string?> ShowSelectValue(INavigationStack stack) {
         string? result = null;
 
         void OkClicked() {
