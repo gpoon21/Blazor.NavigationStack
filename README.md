@@ -5,6 +5,8 @@
 A flexible navigation stack for Blazor. Manage complex navigation while retaining states, ideal for wizards, multi-step
 forms, and nested workflows.
 
+If you find this project helpful, please consider giving it a star! ⭐
+
 ## Table of Contents
 - [Samples/Demo](#samplesdemo)
 - [Installation](#installation)
@@ -29,7 +31,7 @@ forms, and nested workflows.
 <a href="https://purple-rock-0e47e3410.6.azurestaticapps.net/" target="_blank">Live Demo</a>
 <table>
   <tr>
-    <td align="center"><strong>Nested work flow</strong></td>
+    <td align="center"><strong>Multi-step forms</strong></td>
     <td align="center"><strong>Visual customization</strong></td>
   </tr>
   <tr>
