@@ -41,6 +41,9 @@ public interface INavigationStack {
     /// </summary>
     void SetName(string name);
 
+    /// <summary>
+    /// Rerender the <see cref="NavigationStack"/>.
+    /// </summary>
     void Refresh();
 
     /// <summary>
