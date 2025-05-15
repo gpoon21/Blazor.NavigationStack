@@ -8,7 +8,7 @@
 
     <PropertyGroup>
         <PackageId>Blazor.NavigationStack</PackageId>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <Authors>gpoon21</Authors>
         <Company>gpoon21</Company>
         <Description>A flexible navigation stack for Blazor. Easily manage complex page chains with a hierarchical navigation system ideal for wizards, multi-step forms, and nested workflows.</Description>
