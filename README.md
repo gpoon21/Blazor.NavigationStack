@@ -127,7 +127,7 @@ StackPageComponent.razor
 }
 ```
 
-## Modifying Pushed Pages
+## Modifying a page on top of the stack
 
 In case a name or the menu of the current page need to be updated after it was push onto the stack, it can be done through `INavigationStack.SetName` and `INavigationStack.SetMenu` methods.
 
