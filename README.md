@@ -29,22 +29,23 @@ forms, and nested workflows.
 <a href="https://purple-rock-0e47e3410.6.azurestaticapps.net/" target="_blank">Live Demo</a>
 <table>
   <tr>
-    <td align="center"><strong>Nested</strong></td>
-    <td align="center"><strong>Customized</strong></td>
+    <td align="center"><strong>Nested work flow</strong></td>
+    <td align="center"><strong>Visual customization</strong></td>
   </tr>
   <tr>
-    <td><img src="ReadmeAssets/SimpleUsage.gif"  alt="Simple Usage Demo"></td>
-    <td><img src="ReadmeAssets/Customized.gif"  alt="Customized Demo"></td>
+    <td><img src="ReadmeAssets/SimpleUsage.gif"  alt="Demonstration of nested workflow navigation."></td>
+    <td><img src="ReadmeAssets/Customized.gif"  alt="Demonstration of a visually customized navigation stack."></td>
   </tr>
   <tr>
-    <td align="center"><strong>Steps</strong></td>
-    <td align="center"><strong>Preserve States</strong></td>
+    <td align="center"><strong>Wizards</strong></td>
+    <td align="center"><strong>Preserving states</strong></td>
   </tr>
   <tr>
-    <td><img src="ReadmeAssets/Steps.gif"  alt="Steps Demo"></td>
-    <td><img src="ReadmeAssets/PreserveStates.gif"  alt="Steps Demo"></td>
+    <td><img src="ReadmeAssets/Steps.gif"  alt="Demonstration of a multi-step wizard."></td>
+    <td><img src="ReadmeAssets/PreserveStates.gif"  alt="Demonstration of state preservation across navigation."></td>
   </tr>
 </table>
+
 
 
 ## Installation
