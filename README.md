@@ -11,7 +11,7 @@ A flexible navigation stack for Blazor. Easily manage complex navigation while r
 <a href="https://purple-rock-0e47e3410.6.azurestaticapps.net/" target="_blank">Live Demo</a>
 <table>
   <tr>
-    <td align="center"><strong>Simple Usage</strong></td>
+    <td align="center"><strong>Nested</strong></td>
     <td align="center"><strong>Customized</strong></td>
     <td align="center"><strong>Steps</strong></td>
   </tr>
