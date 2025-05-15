@@ -1,9 +1,11 @@
 ﻿<NavigationStack BaseName="Value Table">
     <BaseContent>
+        <p>The data selected in the 'Table Builder' will be displayed below once you build the table.</p>
         @if (_data == null) {
             <h7>
                 Nothing to display.
             </h7>
+            <br/>
         } else {
             <table>
                 <tr>
@@ -49,30 +51,34 @@
         }
 
         RenderFragment Content() {
-            return @<table>
-                <tr>
-                    <th colspan="3">Select values</th>
-                </tr>
-                <tr>
-                    <td><strong>Value1</strong></td>
-                    <td>@value1</td>
-                    <td>
-                        <button @onclick="SelectValue1">Select value</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>Value2</strong></td>
-                    <td>@value2</td>
-                    <td>
-                        <button @onclick="SelectValue2">Select value</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <button disabled="@(value1 == null || value2 == null)" @onclick="OkClicked">Ok</button>
-                    </td>
-                </tr>
-            </table>;
+            return @<div>
+                <p>Select two values by navigating to sub-pages.
+                   The selected values will be preserved in the stack frame allow each value to be selected separately.</p>
+                <table>
+                    <tr>
+                        <th colspan="3">Select values</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Value1</strong></td>
+                        <td>@value1</td>
+                        <td>
+                            <button @onclick="SelectValue1">Select value</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Value2</strong></td>
+                        <td>@value2</td>
+                        <td>
+                            <button @onclick="SelectValue2">Select value</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <button disabled="@(value1 == null || value2 == null)" @onclick="OkClicked">Ok</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>;
         }
 
         NavigationStack.Result<Data> result = await stack.Push<Data>(new StackPage() {
@@ -93,6 +99,7 @@
 
         RenderFragment Content() {
             return @<div>
+                <p>Enter a value in the input field and click 'Ok' to return to the 'Table Builder'.</p>
                 <input type="text" @bind="result"/>
                 <button @onclick="OkClicked">Ok</button>
             </div>;
