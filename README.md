@@ -2,7 +2,7 @@
 # Blazor Navigation Stack
 [![NuGet (with prereleases)](https://img.shields.io/nuget/vpre/Blazor.NavigationStack.svg?logo=nuget)](https://www.nuget.org/packages/Blazor.NavigationStack)
 
-A flexible navigation stack for Blazor. Easily manage complex page chains with a hierarchical navigation system ideal for wizards, multi-step forms, and nested workflows.
+A flexible navigation stack for Blazor. Easily manage complex navigation while retaining states ideal for wizards, multi-step forms, and nested workflows.
 
 
 
@@ -127,7 +127,7 @@ StackPageComponent.razor
 }
 ```
 
-## Modifying Pushed Pages
+## Modifying a page on top of the stack
 
 In case a name or the menu of the current page need to be updated after it was push onto the stack, it can be done through `INavigationStack.SetName` and `INavigationStack.SetMenu` methods.
 
