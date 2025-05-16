@@ -299,7 +299,7 @@ private RenderFragment<NavigationStack.LayoutContext> CustomLayout => context =>
                         @context.HeaderStack
                     </div>
                     <div class="header-right">
-                        @context.MenuStack
+                        @context.Menu
                     </div>
                 </div>
                 <div class="dark-content">
@@ -313,7 +313,7 @@ private RenderFragment<NavigationStack.LayoutContext> CustomLayout => context =>
 The `LayoutContext` provides:
 - `BackButton`: Back navigation button
 - `HeaderStack`: Breadcrumbs/header navigation
-- `MenuStack`: Menu for the current page
+- `Menu`: Menu for the current page
 - `Content`: The main content area
 ### Header
 Customize how navigation headers appear:

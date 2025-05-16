@@ -17,7 +17,7 @@ public partial class NavigationStack {
         /// <summary>
         /// Render menus in the current <see cref="StackPage"/>.
         /// </summary>
-        public required RenderFragment MenuStack { get; init; }
+        public required RenderFragment Menu { get; init; }
 
         /// <summary>
         /// Render the current content of <see cref="NavigationStack"/>.
