@@ -21,7 +21,6 @@ If you find this project helpful, please consider giving it a star! ⭐
 	- [Header](#header)
 	- [Header Stack](#header-stack)
 	- [Header Separator](#header-separator)
-	- [Menu](#menu)
 	- [Back Button](#back-button)
 
 
@@ -282,7 +281,6 @@ To customize the Navigation Stack, pass custom RenderFragments to the appropriat
     HeaderStack="@CustomHeaderStack"
     Header="@CustomHeader"
     HeaderSeparator="@CustomHeaderSeparator"
-    Menu="@CustomMenu"
     Back="@CustomBack">
     <BaseContent>
         <!-- Your base content here -->
@@ -360,22 +358,6 @@ private RenderFragment CustomHeaderSeparator => @<div class="separator-arrow">
     <span>→</span>
 </div>;
 ```
-
-### Menu
-Change how menu options are shown on each page:
-
-```cshtml
-private RenderFragment<NavigationStack.MenuContext> CustomMenu => context => {
-    return @<div class="menu-container">
-        @foreach (var option in context.Options) {
-            <div class="menu-item">
-                @option
-            </div>
-        }
-    </div>;
-};
-```
-
 
 The `MenuContext` provides:
 - `Options`: Collection of menu item fragments to display
