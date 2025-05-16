@@ -3,7 +3,6 @@
     HeaderStack="@CustomHeaderStack"
     Header="@CustomHeader"
     HeaderSeparator="@CustomHeaderSeparator"
-    Menu="@CustomMenu"
     Back="@CustomBack">
 </NestedFlow>
 
@@ -46,16 +45,7 @@
     private RenderFragment CustomHeaderSeparator => @<div class="separator-arrow">
         <span>→</span>
     </div>;
-
-    private RenderFragment<NavigationStack.MenuContext> CustomMenu => context => {
-        return @<div class="menu-container">
-            @foreach (var option in context.Options) {
-                <div class="menu-item">
-                    @option
-                </div>
-            }
-        </div>;
-    };
+    
 
     private RenderFragment<NavigationStack.BackContext> CustomBack => context => {
         return @<button class="back-button" @onclick="context.Back">

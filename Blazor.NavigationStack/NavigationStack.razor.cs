@@ -58,16 +58,7 @@ public partial class NavigationStack {
         /// </summary>
         public required bool IsActive { get; init; }
     }
-
-    /// <summary>
-    /// Provides context for rendering a menu.
-    /// </summary>
-    public readonly struct MenuContext {
-        /// <summary>
-        /// Each rendering a part of the menu in the current <see cref="StackPage"/>.
-        /// </summary>
-        public required IEnumerable<RenderFragment> Options { get; init; }
-    }
+    
 
     /// <summary>
     /// Provides context for rendering a back button.
